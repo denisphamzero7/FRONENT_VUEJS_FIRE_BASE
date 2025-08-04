@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <p>Lucky Number : {{luckyNumber}}</p>
+      <p>
+        Lucky Number is an {{luckyNumber%2 == 0 ? "even number":"odd number"}}
+      </p>
+      <p>Random Number from 1-10: {{ getRandomLuckyNumber() }}</p>
+`
+      <h2>ref to object</h2>
+      <p>{{employee.name}} is {{employee.age}} years old.</p>
+      <p>{{employee.name}} is earning {{employee.salary}} per month.</p>
+      <p>Employee is {{employee.age > 30 ? "old":"young"}}.</p>
+      <h2>reactive to object</h2>
+      <p>{{employee2.name}} is {{employee2.age}} years old.</p>
+      <p>{{employee2.name}} is earning {{employee2.salary}} per month.</p>
+      <p>Employee is {{employee2.age > 30 ? "old":"young"}}.</p>
+    <button @click="updateEmployee">cập nhật sử dụng v-on</button>
+
+    <h2>v-bind : ràng buộc dữ liệu 1 chiều</h2>
+     <a :href="geturrl() ">vuejs</a>
+
+      <h2>v-html</h2>
+      <p v-html="message"></p>
+
+      <h2>v-show</h2>
+      <div v-show="employee2.isactive">
+        <h1>age:{{employee2.age}}</h1>
+      </div>
+      <button @click="tonggleshow">show</button>
+    </div>
+  </body>
+  <script>
+    const { createApp, ref, reactive } = Vue;
+    createApp({
+      setup() {
+        const message = "Hello World"; // non-reactive
+        const luckyNumber = ref(6);  // ref to primitive
+        const employee = ref({ 
+          name: "John",
+          age: 30,
+          salary: 50000,
+          isactive: true
+        });
+        const employee2 = reactive({   // reactive to object
+          name: "Jane",
+          age: 25,
+          salary: 40000,
+        });
+        function getmessage(){
+          return `<h1>Hello World</h1>`
+        }
+        function tonggleshow(){
+            employee2.isactive = !employee2.isactive
+        }
+        function updateEmployee(){
+          employee2.name = "John";
+          employee2.age = 30;
+          employee2.salary = 500044540;
+        }
+        function getRandomLuckyNumber() {
+          luckyNumber.value = Math.floor(Math.random() * 10) + 1;
+          return Math.floor(Math.random() * 10) + 1;
+        }
+        //v-bind 
+            const url = ref("https://vuejs.org/")
+            function geturrl (){
+                const baseurrl= url.value
+             return baseurrl
+            }
+        return {
+          luckyNumber,
+          getRandomLuckyNumber,
+          employee,
+          employee2,
+          message,
+          updateEmployee,geturrl ,tonggleshow
+        };
+      },
+    }).mount("#app");
+  </script>
+</html>

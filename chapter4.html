@@ -1,0 +1,63 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1    v-bind:style="{backgroundColor: 'aqua', fontSize: fontSizeTemp + 'px'}">{{title}}</h1>
+        
+        <ul v-bind:class="{h1: true, 'bg-grey': true}">
+            <li v-for="(student,index) in students" :key ="student">
+                name:{{student.name}}
+                age:{{student.age}}
+            </li>
+        </ul>
+    </div>
+</body>
+<script>
+     const { createApp, ref, reactive } = Vue;
+     createApp({
+
+        setup(){
+        const students = reactive([
+            {name:'hau',
+                age:3,
+                isactive:true
+            },
+            {name:'quan',
+                age:3,
+                isactive:true
+            },
+            {name:'hoai',
+                age:3,
+                isactive:true
+            },
+            {name:'phuong',
+                age:3,
+                isactive:true
+            },
+        ])
+      const title = ref("danh sách học sinh")
+            return{
+                title, students
+                
+        }
+        }
+        
+        
+     }).mount("#app")
+</script>
+<style>
+    .h1 {
+      font-size: 30px;
+      color: green;
+    }
+    .bg-grey {
+      background-color: grey;
+    }
+  </style>
+
+</html>
