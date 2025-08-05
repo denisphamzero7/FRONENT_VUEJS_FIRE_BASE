@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vue v-model Modifiers</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h2>Modifiers: <code>trim</code>, <code>lazy</code>, tự động <code>focus</code></h2>
+       <span>số: {{counter}}</span>
+       <button @click="incremnent()">tăng</button>
+       <button @click="decrement()">giảm</button>
+    <div class="form">
+      <p>Ràng buộc 2 chiều với modifiers</p>
+
+      <label for="name">Tên (trim):</label>
+ >
+      <input id="name"
+             type="text"
+             v-model.trim="name"
+             v-focus
+      />
+
+      <br>
+
+      <label for="age">Tuổi (lazy + number):</label>
+
+      <input id="age"
+             type="text"
+             v-model.lazy.number="age"
+      />
+    </div>
+
+    <p>
+      Kết quả: <strong>{{ name }}</strong> có <strong>{{ age }}</strong> nồi bánh chưng.
+    </p>
+
+    <p>
+      Full name (computed): <strong>{{ fullName }}</strong>
+    </p>
+  </div>
+
+  <script>
+    const { createApp, ref, computed,watch } = Vue;
+
+
+    const vFocus = {
+      mounted(el) {
+        el.focus();
+      }
+    };
+
+    createApp({
+      directives: { focus: vFocus },
+
+      setup() {
+        const counter=ref(0)
+        const incremnent =()=>{
+            return counter.value++
+        }
+        const decrement=()=>{
+            return counter.value--
+        }
+        const name = ref("hau");
+        const age  = ref(4);
+        const lastName = ref("pham");
+
+        const fullName = computed(() => {
+       
+          return `${name.value} ${lastName.value}`;
+        });
+   watch(()=>counter.value,(newvalue,oldvalue)=>{
+    console.log("giá trị của số thay đổi từ ",oldvalue,"tới",newvalue)
+    if(newvalue===5){
+        alert("anh hậu ddayayayayyayyay")
+    }
+   })
+        return {
+            counter,
+          name,
+          age,
+          fullName, incremnent, decrement
+        };
+      }
+    }).mount("#app");
+  </script>
+
+  <style>
+    .form {
+      margin: 1em 0;
+    }
+    label {
+      display: inline-block;
+      width: 60px;
+    }
+    input {
+      padding: 4px;
+    }
+  </style>
+</body>
+</html>

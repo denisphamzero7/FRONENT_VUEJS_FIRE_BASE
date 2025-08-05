@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vue v-model Modifiers</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+    crossorigin="anonymous"
+  >
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+  <div id="app" class="container">
+    <!-- Use @submit.prevent to stop the page reload and call our handler -->
+    <form @submit.prevent="isEditing ? updateMovie() : createMovies()" class="my-4">
+      <div class="mb-3">
+        <label for="title" class="form-label">Tên phim</label>
+        <input
+          id="title"
+          type="text"
+          class="form-control"
+          v-model="movie.title"
+          placeholder="Nhập tên phim"
+          required
+          :disabled="movies.length >= 3 && !isEditing"
+        >
+      </div>
+
+      <div class="mb-3">
+        <label for="year" class="form-label">Năm sản xuất</label>
+        <input
+          id="year"
+          type="number"
+          class="form-control"
+          v-model.number="movie.year"
+          placeholder="Nhập năm"
+          required
+          :disabled="movies.length >= 3 && !isEditing"
+        >
+      </div>
+
+      <button type="submit" class="btn btn-primary" :disabled="(movies.length >= 3 && !isEditing)">
+        {{ isEditing ? 'Cập nhật' : 'Thêm phim' }}
+      </button>
+      <button v-if="isEditing" type="button" class="btn btn-secondary ms-2" @click="cancelEdit">Hủy</button>
+    </form>
+
+    <div v-if="movies.length >= 3 && !isEditing" class="alert alert-warning">
+      Bạn chỉ được nhập tối đa 3 phim!
+    </div>
+
+    <h5>Danh sách phim:</h5>
+    <ul class="list-group">
+      <li
+        v-for="(movieObj, idx) in getAllMovies"
+        class="list-group-item d-flex justify-content-between align-items-center"
+        :key="idx"
+      >
+        <span>{{ movieObj }}</span>
+        <span>
+          <button class="btn btn-sm btn-warning me-2" @click="editMovie(idx)">Sửa</button>
+          <button class="btn btn-sm btn-danger" @click="removeMovie(idx)">Xóa</button>
+        </span>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    const { createApp, reactive, ref, watch, computed } = Vue;
+
+    createApp({
+      setup() {
+        // initial list
+        const movies = reactive([
+          { title: "Movie 1", year: 2035 },
+          { title: "Doraemon Movie 1", year: 2022 },
+        ]);
+     
+        const getAllMovies = computed(() => {
+          return movies.map((movie) => {
+            return `${movie.title} được sản xuất năm ${movie.year}`;
+          });
+        });
+     
+        // form model
+        const movie = reactive({
+          title: "",
+          year: null
+        });
+        const isEditing = ref(false);
+        const editingIndex = ref(-1);
+
+        watch(() => movie.title, (newvalue) => {
+          if (!isEditing.value) {
+            const duplicate = movies.some(m => m.title === newvalue);
+            if (duplicate) {
+              alert("trùng tên rồi người");
+            }
+          }
+        }, { deep: true });
+
+        function createMovies() {
+          if (movies.length >= 3) return;
+          movies.push({
+            title: movie.title.trim(),
+            year: movie.year
+          });
+          movie.title = "";
+          movie.year = null;
+        }
+
+        function removeMovie(idx) {
+          movies.splice(idx, 1);
+          // Nếu đang sửa phim vừa bị xóa thì hủy sửa
+          if (isEditing.value && editingIndex.value === idx) {
+            cancelEdit();
+          }
+        }
+
+        function editMovie(idx) {
+          movie.title = movies[idx].title;
+          movie.year = movies[idx].year;
+          isEditing.value = true;
+          editingIndex.value = idx;
+        }
+
+        function updateMovie() {
+          if (editingIndex.value !== -1) {
+            movies[editingIndex.value].title = movie.title.trim();
+            movies[editingIndex.value].year = movie.year;
+            isEditing.value = false;
+            editingIndex.value = -1;
+            movie.title = "";
+            movie.year = null;
+          }
+        }
+
+        function cancelEdit() {
+          isEditing.value = false;
+          editingIndex.value = -1;
+          movie.title = "";
+          movie.year = null;
+        }
+
+        return {
+          movies,
+          movie,
+          createMovies,
+          getAllMovies,
+          removeMovie,
+          editMovie,
+          updateMovie,
+          isEditing,
+          cancelEdit
+        };
+      }
+    }).mount("#app");
+  </script>
+
+  <style>
+    body { padding-top: 2rem; }
+  </style>
+</body>
+</html>

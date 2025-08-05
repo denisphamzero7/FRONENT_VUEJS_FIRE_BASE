@@ -29,7 +29,7 @@
         <ul :class="{ h1: true, 'bg-grey': true }">
           <li
             v-for="(student, index) in students"
-            :key="index"
+            :key="index"  
             v-show="student.isactive"
           >
             name: {{ student.name }} — age: {{ student.age }}
