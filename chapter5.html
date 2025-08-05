@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Sửa thuộc tính và chắc chắn đã return biến background -->
+      <h1 :style="{ backgroundColor: background, fontSize: '40px' }">
+        ràng buộc style
+      </h1>
+     <span class="padding"  :class="{h1:true}" >ràng buộc class</span>
+      <span class="padding"  :class="{h1:isTitle()}" >ràng buộc class sử dụng funtion</span>
+      <p> số may mắn:</p>
+      <span v-for="(luckyNumber, index) in luckyNumbers" :key="index">
+        {{ luckyNumber }}<br/>
+      </span>
+      <span class="padding"   :class="[ isTitle() ? 'style1' : '', borderclass ]" >ràng buộc class sử dụng funtion</span>
+      <br></br>
+      <div :style="modestyles.style1 "> mảng của class và custom mảng style object</div>
+    </div>
+  </body>
+  <script>
+    const { createApp, ref } = Vue;
+    createApp({
+      setup() {
+        const isTitle =()=>{
+            return true
+        }
+        const modestyles={
+           style1:{
+             fontSize:"40px",
+            backgroundColor: "lightgreen",
+            margin:"20px",
+            border:"1px solid black"
+           }
+        }
+        const borderclass ={
+            border:true
+        }
+        const background = ref('green');
+        const luckyNumbers = [3, 5, 7, 11, 15];
+        // Trả về cả background và luckyNumbers để template dùng được
+        return {
+          background,
+          luckyNumbers,isTitle,modestyles,borderclass
+        };
+      },
+    }).mount("#app");
+  </script>
+  <style>
+    .h1{
+     font-size: 30px;
+     color: red;   
+    }
+    .border{
+   border: 10px solid red;
+    } 
+  </style>
+</html>

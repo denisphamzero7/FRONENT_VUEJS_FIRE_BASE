@@ -1,63 +1,86 @@
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-    <div id="app">
-        <h1    v-bind:style="{backgroundColor: 'aqua', fontSize: fontSizeTemp + 'px'}">{{title}}</h1>
-        
-        <ul v-bind:class="{h1: true, 'bg-grey': true}">
-            <li v-for="(student,index) in students" :key ="student">
-                name:{{student.name}}
-                age:{{student.age}}
-            </li>
-        </ul>
+  <div id="app">
+    <!-- Tiêu đề với style binding -->
+    <h1 :style="{ backgroundColor: 'aqua', fontSize: fontSizeTemp + 'px' }">
+      {{ title }}
+    </h1>
+
+    <!-- Nút show/hide danh sách -->
+    <button @click="showList = !showList">
+      {{ showList ? 'Ẩn' : 'Hiện' }} danh sách
+    </button>
+
+    <!-- Thông báo khi không còn học sinh nào -->
+    <div v-if="students.length === 0">
+      Học sinh hết rồi!
     </div>
+
+    <!-- Khi có học sinh và showList = true thì hiển thị -->
+    <div v-show="showList">
+      <!-- Sử dụng <template> để gói cặp v-if / v-else -->
+      <template v-if="students.length > 0">
+        <ul :class="{ h1: true, 'bg-grey': true }">
+          <li
+            v-for="(student, index) in students"
+            :key="index"
+            v-show="student.isactive"
+          >
+            name: {{ student.name }} — age: {{ student.age }}
+          </li>
+        </ul>
+      </template>
+      <template v-else>
+        <div>
+          Không có học sinh đang hoạt động.
+        </div>
+      </template>
+    </div>
+  </div>
 </body>
+
 <script>
-     const { createApp, ref, reactive } = Vue;
-     createApp({
+  const { createApp, ref, reactive } = Vue;
 
-        setup(){
-        const students = reactive([
-            {name:'hau',
-                age:3,
-                isactive:true
-            },
-            {name:'quan',
-                age:3,
-                isactive:true
-            },
-            {name:'hoai',
-                age:3,
-                isactive:true
-            },
-            {name:'phuong',
-                age:3,
-                isactive:true
-            },
-        ])
-      const title = ref("danh sách học sinh")
-            return{
-                title, students
-                
-        }
-        }
-        
-        
-     }).mount("#app")
+  createApp({
+    setup() {
+      const title = ref("danh sách học sinh");
+      const fontSizeTemp = ref(24);
+      const showList = ref(true);
+
+   
+      const students = reactive([
+        { name: 'Hậu', age: 18, isactive: true },
+        { name: 'Quân', age: 19, isactive: false }
+      ]);
+
+      return {
+        title,
+        fontSizeTemp,
+        showList,
+        students
+      };
+    }
+  }).mount("#app");
 </script>
-<style>
-    .h1 {
-      font-size: 30px;
-      color: green;
-    }
-    .bg-grey {
-      background-color: grey;
-    }
-  </style>
 
+<style>
+  .h1 {
+    font-size: 30px;
+    color: green;
+  }
+  .bg-grey {
+    background-color: grey;
+  }
+  button {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+  }
+</style>
 </html>

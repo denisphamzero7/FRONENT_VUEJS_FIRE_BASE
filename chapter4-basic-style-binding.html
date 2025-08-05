@@ -1,0 +1,37 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic style binding
+    </title>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+      <div v-bind:style="{backgroundColor: 'aqua', fontSize: fontSizeTemp + 'px'}" >{{title}}</div>
+   <div style=" background-color:  aqua;" >{{title}}</div>
+
+    </div>
+    
+</body>
+<script>
+ const { createApp, ref, reactive, computed } = Vue;
+createApp({
+
+    setup() {
+        const title = ref("luyện tập vuejs")
+        const fontSizeTemp=ref(30)
+        return{
+          title,
+          fontSizeTemp
+        }
+    }
+}).mount('#app')
+
+
+</script>
+<style>
+
+
+</style>
+</html>

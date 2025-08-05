@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+  <body>
+    <div id="app">
+
+        <input type="input" value="" v-on:keyup.enter="pressenter"> <button @click.stop="btnclick('vue sử dụng button','rất hay nhé',$event)">click me</button>
+<div @click="btnclick('vue sử dụng div','rất hay nhé',$event)">
+    <button @click.stop="btnclick('vue sử dụng button','rất hay nhé',$event)">on click</button>
+</div>
+       
+
+<p> Tọa độ x :{{x}} - Tọa độ y :{{y}}</p>
+    </div>
+  </body>
+  <script>
+    const { createApp, ref } = Vue;
+    createApp({
+      setup() {
+        const x = ref(0);
+        const y =ref(0)
+        const pressenter =()=>{
+            alert("nhập vào bàn phím")
+        }
+        const btnclick =(new1,new2,event)=>{
+             x.value=event.x;
+             y.value=event.y
+            console.log('event',event)
+            alert(new1);
+            alert(new2)
+        }
+        return {
+   btnclick,x,y,pressenter
+        };
+      },
+    }).mount("#app");
+  </script>
+  <style>
+ 
+  </style>
+</html>
