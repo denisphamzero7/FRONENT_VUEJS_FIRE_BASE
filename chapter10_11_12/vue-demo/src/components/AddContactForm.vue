@@ -1,13 +1,15 @@
 <template>
   <div class="add-contact-form">
-    <h3>Add New Contact</h3>
-    <form @submit.prevent="submitForm">
+    <h3>thêm liên hệ
+      
+    </h3>
+    <form @submit.prevent="addContact">
       <div class="form-group">
         <label for="name">Name:</label>
         <input 
           id="name"
           type="text" 
-          v-model="formData.name"
+          v-model="contact.name"
           required
           class="form-input"
         />
@@ -18,7 +20,7 @@
         <input 
           id="email"
           type="email" 
-          v-model="formData.email"
+          v-model="contact.email"
           class="form-input"
         />
       </div>
@@ -28,7 +30,7 @@
         <input 
           id="phone"
           type="text" 
-          v-model="formData.phone"
+          v-model="contact.phone"
           class="form-input"
         />
       </div>
@@ -38,30 +40,22 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'AddContactForm',
-  data() {
-    return {
-      formData: {
-        name: '',
-        email: '',
-        phone: ''
-      }
-    }
-  },
-  methods: {
-    submitForm() {
-      this.$emit('add-contact', { ...this.formData })
-      // Reset form
-      this.formData = {
-        name: '',
-        email: '',
-        phone: ''
-      }
-    }
+<script setup>
+import {reactive,defineEmits} from 'vue';
+const emit = defineEmits(['add-contact']);
+const contact = reactive({
+  name: '',
+  email: '',
+  phone: ''
+});
+const addContact = () => {
+  if (contact.name) {
+    emit('add-contact', { ...contact });
+    contact.name = '';
+    contact.email = '';
+    contact.phone = '';
   }
-}
+};
 </script>
 
 <style scoped>
