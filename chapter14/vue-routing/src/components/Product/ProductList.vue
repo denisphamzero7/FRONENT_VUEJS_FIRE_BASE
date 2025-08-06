@@ -11,6 +11,7 @@ const products = ref([
 <template>
     <div>
         <h1>Product List</h1>
+        <button @click="$router.go(-1)">Back</button>
         <div class="row">
             <div class="col-md-4 mb-3" v-for="product in products" :key="product.id">
                 <div class="card">

@@ -16,7 +16,7 @@ const toggleTheme = () => {
             <div class="container">
                 <!-- Logo -->
                 <router-link class="navbar-brand d-flex align-items-center" :to="{ name: 'home' }">
-                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
+                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2" aria-current="page" style="width: 32px; height: 32px;">
                         <span class="text-white fw-bold">$</span>
                     </div>
                     <span class="fw-bold">Brand</span>
@@ -55,8 +55,8 @@ const toggleTheme = () => {
                     </div>
                     
                     <!-- Auth buttons -->
-                    <router-link class="btn btn-outline-primary me-2" to="#">Sign In</router-link>
-                    <router-link class="btn btn-primary" to="#">Sign Up</router-link>
+                    <router-link class="btn btn-outline-primary me-2" :to="{ name: 'login' }">Sign In</router-link>
+                    <router-link class="btn btn-primary" :to="{ name: 'login' } ">Sign Up</router-link>
                 </div>
             </div>
         </nav>
