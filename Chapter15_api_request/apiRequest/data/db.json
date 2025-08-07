@@ -1,0 +1,33 @@
+{
+    "destination":[
+        {
+            "id":1,
+            "name":"Hà nội",
+            "day":7,
+            "description":" Thủ đô của nước cộng hòa xã hội chủ nghĩa việt nam",
+            "price":1000
+        },
+        {
+            "id":2,
+            "name":"Đà Nẵng",
+            "day":7,
+            "description":" Thành phố đáng sống nhất trên thế giới",
+            "price":2000
+        },
+        {
+            "id":3,
+            "name":"Hồ chí minh city",
+            "day":7,
+            "description":" Thành phố mang tên bác",
+            "price":4000
+        },
+        {
+            "id":4,
+            "name":"Nha trang",
+            "day":7,
+            "description":" là nơi người và biển đều đẹp",
+            "price":22903
+        }
+
+    ]
+}
