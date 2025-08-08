@@ -13,9 +13,9 @@ export function useSwal() {
   }
   const showError = async (message) => {
     return await showAlert({
-      title: ' google',
+      title: 'Error',
       text: message,
-      icon: 'success',
+      icon: 'error',
       position: 'top-end',
     })
   }
