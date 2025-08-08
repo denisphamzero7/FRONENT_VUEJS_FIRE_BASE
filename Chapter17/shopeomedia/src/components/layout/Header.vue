@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { APP_ROUTE_NAMES } from '@/constants/routeName';
 import { useThemeStore } from '@/stores/themestore';
+import { useAuthStore } from '@/stores/authSore';
 import { RouterLink } from 'vue-router';
+import router from '@/router';
 const themeStore = useThemeStore();
+const authStore = useAuthStore();
 </script>
 
 <template>
@@ -33,6 +36,7 @@ const themeStore = useThemeStore();
         </li>
       </ul>
      <ul class="d-flex navbar-nav">
+      <li class="nav-link" v-if="authStore.isAuthenticated">wellcome ,{{ authStore.user?.email }}</li>
           <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="bi bi-laptop"></i>
@@ -43,12 +47,16 @@ const themeStore = useThemeStore();
 
           </ul>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="!authStore.isAuthenticated">
           <router-link :to="{name:APP_ROUTE_NAMES.SIGN_IN}" class="nav-link active" aria-current="page" href="#">Sign In</router-link>
 
         </li>
-        <li>
+        <li v-if="!authStore.isAuthenticated" class="nav-item">
             <router-link :to="{name:APP_ROUTE_NAMES.SIGN_UP}" class="nav-link active" aria-current="page" href="#">Sign Up</router-link>
+        </li>
+
+        <li class="nav-item" v-if="authStore.isAuthenticated">
+          <button @click="[authStore.signOutUser(),router.push({name:APP_ROUTE_NAMES.HOME})]" class="nav-link">Sign out</button>
         </li>
      </ul>
     </div>

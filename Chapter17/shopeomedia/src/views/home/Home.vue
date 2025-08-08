@@ -116,7 +116,7 @@ const filteredProductList = computed(() => {
   <div>
     <!-- Hero -->
     <div class="bg-success w-100 position-relative overflow-hidden mb-4 py-5 d-flex align-items-center">
-      <div class="position-absolute top-0 start-0 w-100 h-100 bg-success opacity-50"></div>
+     
       <div class="container-fluid position-relative" style="z-index:1">
         <div class="row justify-content-center text-center">
           <div class="col-lg-8 col-xl-7">
@@ -151,13 +151,13 @@ const filteredProductList = computed(() => {
       </div>
     </div>
 
-    <!-- Content -->
+
     <div class="container">
       <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
         <h1 class="h3 mb-0">Danh sách sản phẩm</h1>
 
         <div class="d-flex gap-2 align-items-center">
-          <!-- category buttons -->
+        
           <div class="btn-group" role="group" aria-label="Categories">
             <button
               v-for="(category, index) in categoryList"
@@ -171,7 +171,7 @@ const filteredProductList = computed(() => {
             </button>
           </div>
 
-          <!-- sort select -->
+        
           <div class="ms-2">
             <label class="form-label mb-0 small text-muted">Sắp xếp</label>
             <select class="form-select form-select-sm" v-model="sortSelected" style="min-width: 180px;">
@@ -183,7 +183,7 @@ const filteredProductList = computed(() => {
         </div>
       </div>
 
-      <!-- loading / error -->
+      
       <div v-if="loading" class="text-center my-5">
         <div class="spinner-border text-success" role="status" aria-hidden="true"></div>
         <div class="mt-2 text-muted">Đang tải sản phẩm…</div>

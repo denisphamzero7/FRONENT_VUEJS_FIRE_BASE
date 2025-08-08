@@ -1,65 +1,65 @@
 <!-- SignUp.vue -->
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useSwal } from '@/utility/useSwal';
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useSwal } from '@/composible/useSwal'
 
-import { APP_ROUTE_NAMES } from '@/constants/routeName';
-import { useAuthStore } from '@/stores/authSore';
+import { APP_ROUTE_NAMES } from '@/constants/routeName'
+import { useAuthStore } from '@/stores/authSore'
 
-const { showSuccess, showError } = useSwal();
-const router = useRouter();
-const authStore = useAuthStore();
+const { showSuccess, showError } = useSwal()
+const router = useRouter()
+const authStore = useAuthStore()
 
-const loading = ref(false);
-const errors = ref<string[]>([]);
+const loading = ref(false)
+const errors = ref<string[]>([])
 
 const form = reactive({
   email: '',
   password: '',
-});
+})
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 function validate(): boolean {
-  errors.value = [];
+  errors.value = []
   if (!form.email.trim() || !emailRegex.test(form.email.trim())) {
-    errors.value.push('Vui lòng nhập email hợp lệ.');
+    errors.value.push('Vui lòng nhập email hợp lệ.')
   }
   if (!form.password || form.password.length < 6) {
-    errors.value.push('Mật khẩu phải có ít nhất 6 ký tự.');
+    errors.value.push('Mật khẩu phải có ít nhất 6 ký tự.')
   }
-  return errors.value.length === 0;
+  return errors.value.length === 0
 }
 
 const handleSignUp = async () => {
-  if (!validate()) return;
+  if (!validate()) return
 
-  loading.value = true;
+  loading.value = true
   try {
-    await authStore.signUpUser(form.email.trim(), form.password);
-    showSuccess('Đăng ký thành công!');
-    router.push({ name: APP_ROUTE_NAMES.HOME });
+    await authStore.signUpUser(form.email.trim(), form.password)
+    showSuccess('Đăng ký thành công!')
+    router.push({ name: APP_ROUTE_NAMES.HOME })
   } catch (err: any) {
     // Map error.code của Firebase sang thông báo Việt
     switch (err.code) {
       case 'auth/invalid-email':
-        errors.value.push('Email không hợp lệ.');
-        break;
+        errors.value.push('Email không hợp lệ.')
+        break
       case 'auth/email-already-in-use':
-        errors.value.push('Email này đã được sử dụng.');
-        break;
+        errors.value.push('Email này đã được sử dụng.')
+        break
       case 'auth/weak-password':
-        errors.value.push('Mật khẩu quá yếu (ít nhất 6 ký tự).');
-        break;
+        errors.value.push('Mật khẩu quá yếu (ít nhất 6 ký tự).')
+        break
       default:
-        errors.value.push('Đã xảy ra lỗi: ' + err.message);
+        errors.value.push('Đã xảy ra lỗi: ' + err.message)
     }
-    showError(errors.value.join('\n'));
+    showError(errors.value.join('\n'))
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
+}
 </script>
 
 <template>
@@ -106,7 +106,12 @@ const handleSignUp = async () => {
 
               <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-success" :disabled="authStore.isloading">
-                  <span v-if="authStore.isloading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  <span
+                    v-if="authStore.isloading"
+                    class="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
                   {{ authStore.isloading ? 'Đang đăng ký...' : 'Đăng Ký' }}
                 </button>
               </div>
@@ -122,8 +127,20 @@ const handleSignUp = async () => {
             </div>
 
             <div class="d-flex gap-2 justify-content-center mt-3">
-              <button class="btn btn-outline-primary btn-sm" type="button" :disabled="authStore.isloading">Google</button>
-              <button class="btn btn-outline-dark btn-sm" type="button" :disabled="authStore.isloading">Github</button>
+              <button
+                class="btn btn-outline-primary btn-sm"
+                type="button"
+                :disabled="authStore.isloading"
+              >
+                Google
+              </button>
+              <button
+                class="btn btn-outline-dark btn-sm"
+                type="button"
+                :disabled="authStore.isloading"
+              >
+                Github
+              </button>
             </div>
           </div>
         </div>
